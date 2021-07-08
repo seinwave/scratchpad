@@ -1,23 +1,43 @@
 import React from "react";
 import styled from "styled-components/macro";
 import SyntaxHighlighter from "react-syntax-highlighter";
-import { nightOwl } from "react-syntax-highlighter/dist/esm/styles/hljs";
+import { nightOwl, xcode } from "react-syntax-highlighter/dist/esm/styles/hljs";
+
+// const COLORS = {
+//   dark:
+// }
 
 export default function CodeBlock({
   filename = "file.ext",
   code = "import * as fart from './fart/wiener-fart'",
+  theme = "dark",
 }) {
   return (
-    <Wrapper>
+    <Wrapper
+      style={{
+        "--background-color": theme === "light" ? "#31324e" : "#fff",
+        "--color": theme === "light" ? "#fff" : "#31324e",
+      }}
+    >
       <CodeBlockElement>
-        <FileName>{filename}</FileName>
+        <FileName
+          style={{
+            "--filename-background-color":
+              theme === "light" ? "#454571" : "HSL(240, 39%, 74%)",
+            "--border": theme === "light" ? "" : `solid 1px var(--color)`,
+          }}
+        >
+          {filename}
+        </FileName>
         <Extension>jsx</Extension>
         <Code>
           <CodeText>
             <SyntaxHighlighter
               language="javascript"
-              style={nightOwl}
-              customStyle={{ backgroundColor: "#31324e" }}
+              style={theme === "light" ? nightOwl : xcode}
+              customStyle={{
+                backgroundColor: theme === "light" ? "#31324e" : "#fff",
+              }}
             >
               {code}
             </SyntaxHighlighter>
@@ -37,7 +57,7 @@ const Wrapper = styled.div`
 const CodeBlockElement = styled.div`
   width: 600px;
   position: relative;
-  color: white;
+  color: var(--color);
 `;
 
 const FileName = styled.div`
@@ -45,7 +65,8 @@ const FileName = styled.div`
   top: -15px;
   left: -5px;
   padding: 8px;
-  background-color: #454571;
+  background-color: var(--filename-background-color);
+
   border-radius: 4px;
   font-size: 14px;
 `;
@@ -56,15 +77,15 @@ const Extension = styled.div`
   right: 4px;
   padding: 0px 6px;
   font-size: 14px;
-  color: hsl(240deg 54% 95%);
+  color: var(--color);
   opacity: 0.7;
-  background-color: #31324e;
-  border: solid 1px;
+  background-color: var(--background-color);
+  border: solid 1px var(--color);
   border-radius: 3px;
 `;
 
 const Code = styled.div`
-  background-color: #31324e;
+  background-color: var(--background-color);
   padding: 3rem 2rem;
   border-radius: 5px;
   box-shadow: 0px 5px 20px #c3c5c8;
