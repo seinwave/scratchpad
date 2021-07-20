@@ -2,6 +2,7 @@ import React, { FC } from "react";
 import CodeBlock from "./components/CodeBlock/CodeBlock";
 import FakeTweet from "./components/FakeTweet/FakeTweet";
 import TypeAheadSearch from "./components/TypeAhead/TypeAheadSearch";
+import { ErrorBoundary } from "react-error-boundary";
 import { dyrtSearch } from "./utils/dyrt-search";
 import styled from "styled-components/macro";
 
@@ -16,17 +17,26 @@ const sampleTweet = {
     "A book hasn't caused me this much trouble since Where's Waldo went to that barber pole factory.",
 };
 
-const sampleList = [
-  { node: "Umpire", name: "Astrochart" },
-  { node: "$$Cash$$", name: "Phillys Schlafly" },
-  { node: "GrapeApe", name: "Orangutan" },
-  { node: "Hambone", name: "Metafilter" },
-  { node: "NoSpankYou", name: "Sophisticats" },
-];
+const ErrorFallback: FC<{ error: any; resetErrorBoundary: any }> = ({
+  error,
+  resetErrorBoundary,
+}) => {
+  return (
+    <div role="alert">
+      <p>Something went wrong:</p>
+      <pre>{error.message}</pre>
+      <button onClick={resetErrorBoundary}>Try again</button>
+    </div>
+  );
+};
 
 const App: FC = () => {
   const [theme, setTheme] = React.useState("dark");
   const [componentNumber, setComponentNumber] = React.useState(0);
+  const [statusCapture, setStatusCapture] = React.useState({
+    status: "",
+    error: "",
+  });
 
   const componentArray = [
     <CodeBlock
@@ -35,7 +45,13 @@ const App: FC = () => {
       code={"import * as OiNoi from example"}
     />,
     <FakeTweet theme={theme} tweet={sampleTweet} />,
-    <TypeAheadSearch fetcher={dyrtSearch} icon={"compass"} />,
+
+    <TypeAheadSearch
+      fetcher={dyrtSearch}
+      icon={"compass"}
+      statusCapture={statusCapture}
+      setStatusCapture={setStatusCapture}
+    />,
   ];
   const currentComponent = componentArray[componentNumber];
 
@@ -64,7 +80,12 @@ const App: FC = () => {
           Switch Components
         </Button>
       </ButtonRow>
-      {currentComponent}
+      <ErrorBoundary
+        FallbackComponent={ErrorFallback}
+        onReset={() => setStatusCapture({ status: "", error: "" })}
+      >
+        {currentComponent}
+      </ErrorBoundary>
     </Wrapper>
   );
 };

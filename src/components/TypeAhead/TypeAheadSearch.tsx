@@ -1,8 +1,6 @@
 import React, { FC } from "react";
 import { debounce } from "../../utils/debounce";
 import { COLORS } from "../../styles/CONSTANTS";
-import { ErrorFallback } from "../ErrorFallback/ErrorFallback";
-import { ErrorBoundary } from "react-error-boundary";
 import Icon from "./Icon";
 import styled from "styled-components/macro";
 
@@ -12,10 +10,12 @@ interface ResultObject {
 
 interface ResultArray extends Array<ResultObject> {}
 
-const TypeAheadSearch: FC<{ fetcher: Function; icon: string }> = ({
-  fetcher,
-  icon,
-}) => {
+const TypeAheadSearch: FC<{
+  fetcher: Function;
+  icon: string;
+  statusCapture: any;
+  setStatusCapture: any;
+}> = ({ fetcher, icon, setStatusCapture, statusCapture }) => {
   const [nameString, setNameString] = React.useState("");
   const [results, setResults] = React.useState<ResultArray>([]);
 
@@ -36,41 +36,39 @@ const TypeAheadSearch: FC<{ fetcher: Function; icon: string }> = ({
         return setResults(res);
       })
       .catch((err: Error) => {
-        throw new Error(`Sorry, something went wrong: ${err.message}`);
+        setStatusCapture({ status: "error", error: err.message });
       });
   }
 
-  return (
-    <ErrorBoundary
-      FallbackComponent={ErrorFallback}
-      onReset={() => {
-        setResults([]);
-      }}
-    >
-      <Wrapper>
-        <label aria-label="camp-site-search">Find a camp site</label>
-        <form name="camp-site-search" onSubmit={() => handleSearch()}>
-          <SearchInput
-            value={nameString}
-            onChange={(e) => handleChange(e)}
-            placeholder={"Moon river"}
-          ></SearchInput>
-        </form>
+  const { status, error } = statusCapture;
+  if (status === "error") {
+    throw new Error(`Sorry, something went wrong: ${error}`);
+  }
 
-        <ResultsDropDown>
-          {results.map((datum: ResultObject) => {
-            return (
-              <SingleResultWrapper>
-                <ResultIcon>
-                  <Icon id={icon} size={24}></Icon>
-                </ResultIcon>
-                <SingleResult>{datum.name}</SingleResult>
-              </SingleResultWrapper>
-            );
-          })}
-        </ResultsDropDown>
-      </Wrapper>
-    </ErrorBoundary>
+  return (
+    <Wrapper>
+      <label aria-label="search-input">Find a thing</label>
+      <form name="search-input" onSubmit={() => handleSearch()}>
+        <SearchInput
+          value={nameString}
+          onChange={(e) => handleChange(e)}
+          placeholder={"Moon river"}
+        ></SearchInput>
+      </form>
+
+      <ResultsDropDown>
+        {results.map((datum: ResultObject) => {
+          return (
+            <SingleResultWrapper>
+              <ResultIcon>
+                <Icon id={icon} size={24}></Icon>
+              </ResultIcon>
+              <SingleResult>{datum.name}</SingleResult>
+            </SingleResultWrapper>
+          );
+        })}
+      </ResultsDropDown>
+    </Wrapper>
   );
 };
 
