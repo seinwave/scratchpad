@@ -1,19 +1,19 @@
 import React, { FC } from "react";
 import CodeBlock from "./components/CodeBlock/CodeBlock";
 import FakeTweet from "./components/FakeTweet/FakeTweet";
+import TypeAheadSearch from "./components/TypeAhead/TypeAheadSearch";
+import { dyrtSearch } from "./utils/dyrt-search";
 import styled from "styled-components/macro";
-import HelloTS from "./components/HelloTS/HelloTS";
-import List from "./components/HelloTS/List";
 
 const sampleTweet = {
-  name: "Smadolph Smitler",
+  name: "Tracy Jordan",
   handle: "@theRealAdrianBrody",
   pic: "https://en.wikipedia.org/wiki/Tony_Soprano#/media/File:Tony_Soprano_2.jpg",
   likes: 400000,
   retweets: 910,
   date: "2020-04-18",
   content:
-    "I agree @theRealStephenHawking: women aren't funny, and never will be.",
+    "A book hasn't caused me this much trouble since Where's Waldo went to that barber pole factory.",
 };
 
 const sampleList = [
@@ -35,8 +35,7 @@ const App: FC = () => {
       code={"import * as OiNoi from example"}
     />,
     <FakeTweet theme={theme} tweet={sampleTweet} />,
-    <HelloTS />,
-    <List data={sampleList} />,
+    <TypeAheadSearch fetcher={dyrtSearch} icon={"compass"} />,
   ];
   const currentComponent = componentArray[componentNumber];
 
