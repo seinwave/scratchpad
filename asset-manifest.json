@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/scratchpad/static/css/main.6dea0f05.chunk.css",
+    "main.js": "/scratchpad/static/js/main.f83bef39.chunk.js",
+    "main.js.map": "/scratchpad/static/js/main.f83bef39.chunk.js.map",
+    "runtime-main.js": "/scratchpad/static/js/runtime-main.6fc73682.js",
+    "runtime-main.js.map": "/scratchpad/static/js/runtime-main.6fc73682.js.map",
+    "static/js/2.fc88997d.chunk.js": "/scratchpad/static/js/2.fc88997d.chunk.js",
+    "static/js/2.fc88997d.chunk.js.map": "/scratchpad/static/js/2.fc88997d.chunk.js.map",
+    "static/js/3.74c33828.chunk.js": "/scratchpad/static/js/3.74c33828.chunk.js",
+    "static/js/3.74c33828.chunk.js.map": "/scratchpad/static/js/3.74c33828.chunk.js.map",
+    "index.html": "/scratchpad/index.html",
+    "static/css/main.6dea0f05.chunk.css.map": "/scratchpad/static/css/main.6dea0f05.chunk.css.map",
+    "static/js/2.fc88997d.chunk.js.LICENSE.txt": "/scratchpad/static/js/2.fc88997d.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.6fc73682.js",
+    "static/js/2.fc88997d.chunk.js",
+    "static/css/main.6dea0f05.chunk.css",
+    "static/js/main.f83bef39.chunk.js"
+  ]
+}
